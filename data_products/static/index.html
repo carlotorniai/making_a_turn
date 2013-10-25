@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<style type="text/css">
+a {color:#333333;}      
+a:visited {color:#333333;} 
+body {background-color:#CCFFCC;}
+</style>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script type="text/javascript" src="http://malsup.github.io/jquery.form.js"></script>
+<script type="text/javascript">
+// prepare the form when the DOM is ready 
+$(document).ready(function() { 
+    var options = { 
+        target:        '#output1',      // target element to be updated with server response 
+        beforeSubmit:  showRequest,     // pre-submit callback 
+        complete:       showResponse,   // post-submit callback 
+        dataType : 'text'
+        }; 
+    // bind form using 'ajaxForm' 
+    $('#myform1').ajaxForm(options); 
+    });
+
+
+// pre-submit callback 
+function showRequest(formData, jqForm, options) { 
+    // formData is an array; here we use $.param to convert it to a string to display it 
+    // but the form plugin does this for you automatically when it submits the data 
+    var queryString = $.param(formData); 
+ 
+    return true; 
+} 
+ 
+// post-submit callback 
+function showResponse(response, statusText, xhr, $form)  { 
+    var currentUrl = window.location.href;
+    // Fill the output1 div using the response
+    $('.output1').html(response.responseText + '<p><a href="test"> Classify another document </a></p>');
+    // Clears the output div and the 
+    // form content
+    $(".output1 a").click(function(e) {
+    e.preventDefault();   
+    $(".output1").html('');
+    $('#mytextarea').val("");
+    });
+} 
+</script>
+</head>
+<h3>Classify articles accorindg to NYT Sections</h3>
+<div id="formcontainer">
+<p>Past a chunk of text in the form below to get it classified in a NYT section</p>
+<form id="myform1" action="http://0.0.0.0:5000/parsetext" method="POST">
+<textarea id="mytextarea" type="text" cols="45" rows="5" name="text"></textarea>
+<input type="submit" value="Classify"/>
+</form>
+</div>
+<div class="output1"><a href="test"> </a></div>
+</body>
+</html>
