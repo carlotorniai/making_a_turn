@@ -8,9 +8,8 @@ app = Flask(__name__)
 
 
 def readpickle(filename):
-    ''' reads a pickle file and return its content
-    INPUT string
-    OUTPUT object'''
+    ''' Reads a pickle file and returns
+     its content'''
     infile = open(filename, "rb")
     content = pickle.load(infile)
     infile.close()
